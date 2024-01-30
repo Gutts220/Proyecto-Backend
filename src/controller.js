@@ -35,6 +35,12 @@ async function deleteProduct(id) {
   await fs.writeFile('./src/productos.json', JSON.stringify(updatedProducts, null, 2), 'utf-8');
 }
 
+async function getCart() {
+  const data = await fs.readFile('./src/carrito.json', 'utf-8');
+  return JSON.parse(data);
+}
+
+
 async function getCartById(id) {
   try {
     const data = await fs.readFile('./src/carrito.json', 'utf-8');
@@ -56,5 +62,6 @@ module.exports = {
   addProduct,
   updateProduct,
   deleteProduct,
+  getCart,
   getCartById,
 };

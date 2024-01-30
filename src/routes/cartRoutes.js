@@ -5,7 +5,22 @@ const{Router} = require('express');
 const router = Router();
 const controller = require('../controller.js');
 
-
+router.get('/', async (req, res) => {
+  try {
+    const limit = req.query.limit;
+    const cart = await controller.getCart();
+    
+    if (limit) {
+      const limitedCart = products.slice(0, parseInt(limit, 10));
+      res.json({ cart: limitedCart });
+    } else {
+      res.json({ cart });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener el carrito.' });
+  }
+});
 
 router.post('/', async (req, res) => {
     try {
@@ -55,7 +70,7 @@ router.post('/', async (req, res) => {
         cart.products.push(productToAdd);
       }
   
-      await fs.writeFile('carrito.json', JSON.stringify(cart, null, 2), 'utf-8');
+      await fs.writeFile('./src/carrito.json', JSON.stringify(cart, null, 2), 'utf-8');
       res.json({ message: 'Producto agregado al carrito correctamente.' });
     } catch (error) {
       res.status(500).json({ error: 'Error al agregar producto al carrito.' });
