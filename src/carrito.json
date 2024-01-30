@@ -1,0 +1,8 @@
+{
+    "id": "1a2b3c4d",  
+    "products": [
+      { "product": "a1", "quantity": 2 },
+      { "product": "b2", "quantity": 1 },
+      { "product": "c3", "quantity": 3 }
+    ]
+  }

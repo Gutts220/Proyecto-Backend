@@ -1,8 +1,11 @@
 const express = require('express');
-const { ProductManager } = require('./ProductManager');
-const rutas = require('./routes.js');
+// const { ProductManager } = require('./ProductManager');
+const productRoutes = require('./routes/productRoutes.js');
+const cartRoutes = require('./routes/cartRoutes.js');
 const app = express();
 const port = 8080;
+const API_PREFIX = 'api';
+
 
 // const productManager = new ProductManager('productos.json'); 
 
@@ -40,8 +43,11 @@ const port = 8080;
 // });
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/products', rutas);
+app.use(`/${API_PREFIX}/products`, productRoutes);
+
+app.use(`/${API_PREFIX}/cart`, cartRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
