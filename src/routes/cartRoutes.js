@@ -3,7 +3,7 @@
 const{Router} = require('express');
  
 const router = Router();
-const controller = require('../controller.js');
+const controller = require('../CartManajer');
 
 router.get('/', async (req, res) => {
   try {

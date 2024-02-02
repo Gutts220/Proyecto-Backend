@@ -1,14 +1,15 @@
 
 const{Router} = require('express');
- 
+const { ProductManager } = require('./ProductManager');
 const router = Router();
+const productManager = new ProductManager('productos.json'); 
 
-const controller = require('../controller.js');
+router.use(express.json());
 
-router.get('/', async (req, res) => {
+router.get('/products', async (req, res) => {
   try {
     const limit = req.query.limit;
-    const products = await controller.getProducts();
+    const products = await productManager.getProducts();
     
     if (limit) {
       const limitedProducts = products.slice(0, parseInt(limit, 10));
@@ -17,15 +18,14 @@ router.get('/', async (req, res) => {
       res.json({ products });
     }
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Error al obtener productos.' });
   }
 });
 
-router.get('/:pid', async (req, res) => {
+router.get('/products/:pid', async (req, res) => {
   try {
     const productId = parseInt(req.params.pid, 10);
-    const product = await controller.getProductById(productId);
+    const product = await productManager.getProductById(productId);
 
     if (product) {
       res.json({ product });
@@ -37,10 +37,11 @@ router.get('/:pid', async (req, res) => {
   }
 });
 
+
 router.post('/', async (req, res) => {
   try {
     const newProduct = req.body;
-    await controller.addProduct(newProduct);
+    await productManager.addProduct(newProduct);
     res.json({ message: 'Producto agregado correctamente.' });
   } catch (error) {
     res.status(500).json({ error: 'Error al agregar el producto.' });
@@ -51,7 +52,7 @@ router.put('/:pid', async (req, res) => {
   try {
     const productId = parseInt(req.params.pid, 10);
     const updatedProductData = req.body;
-    await controller.updateProduct(productId, updatedProductData);
+    await productManager.updateProduct(productId, updatedProductData);
     res.json({ message: 'Producto actualizado correctamente.' });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar el producto.' });
@@ -61,7 +62,7 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
   try {
     const productId = parseInt(req.params.pid, 10);
-    await controller.deleteProduct(productId);
+    await productManager.deleteProduct(productId);
     res.json({ message: 'Producto eliminado correctamente.' });
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar el producto.' });
