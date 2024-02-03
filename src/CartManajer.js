@@ -1,5 +1,5 @@
 const fs = require('fs');
-import {v4 as uuidv4} from 'uuidv4'
+import {v4 as uuidv4} from 'uuid'
 
 export class CartManager {
   constructor() {
