@@ -1,6 +1,7 @@
 
 import {Router} from 'express';
 import { ProductManager } from './ProductManager';
+
 const router = Router();
 const productManager = new ProductManager('productos.json'); 
 
@@ -42,7 +43,7 @@ router.post('/', async (req, res) => {
   try {
     const {title, description, price, thumbnail, code, stock, status=true, category}= req.body;
     const response = await productManager.addProduct({title, description, price, thumbnail, code, stock, status, category});
-    res.json(response);
+    io.emit('productoAgregado', response);
   } catch (error) {
     res.status(500).json({ error: 'Error al agregar el producto.' });
   }
@@ -70,4 +71,4 @@ router.delete('/:pid', async (req, res) => {
   }
 });
 
-module.exports = router;
+export {router};

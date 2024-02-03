@@ -32,10 +32,10 @@ router.post('/:cid/products/:pid', async (req, res) => {
       const {productId} = req.params;
   
       await cartManager.addProductToCart(cartId, productId);
-      res.json({ message: 'Producto agregado al carrito correctamente.' });
+      io.emit('productoAgregadoAlCarrito', { cartId, productId });
     } catch (error) {
       res.status(500).json({ error: 'Error al agregar producto al carrito.' });
     }
 });
 
-module.exports = router;
+export  {router}
