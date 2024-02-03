@@ -40,7 +40,7 @@ router.get('/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const {title, description, price, thumbnail, code, stock, status, category}= req.body;
+    const {title, description, price, thumbnail, code, stock, status=true, category}= req.body;
     const response = await productManager.addProduct({title, description, price, thumbnail, code, stock, status, category});
     res.json(response);
   } catch (error) {
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
   try {
     const {productId} = req.params;
-    const {title, description, price, thumbnail, code, stock, status, category} = req.body;
+    const {title, description, price, thumbnail, code, stock, status=true, category} = req.body;
 
     const response =await productManager.updateProduct(productId, {title, description, price, thumbnail, code, stock, status, category});
     res.json(response);
