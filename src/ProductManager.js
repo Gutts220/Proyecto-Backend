@@ -1,139 +1,81 @@
 const fs = require('fs');
+import {v4 as uuidv4} from 'uuid'
 
-class ProductManager {
-  constructor(filePath) {
-    this.path = filePath;
+export class ProductManager {
+  constructor() {
+    
+    this.path = 'productos.json';
+    this.products = [];
   }
 
-  addProduct(product) {
-    // Leer productos existentes
-    const products = this.getProductsFromFile();
+  addProduct = async ({title, description, price, thumbnail, code, stock, status, category}) => {
+    const id  = uuidv4();
+    
+    let newProduct = {title, description, price, thumbnail, code, stock, status, category}
+    
+    this.products = await this.getProduct()
 
-    // Asignar un id autoincrementable
-    product.id = this.generateProductId();
+    this.products.push(newProduct);
 
-    // Agregar el nuevo producto al array
-    products.push(product);
-
-    // Guardar el array actualizado en el archivo
-    this.saveProductsToFile(products);
-
+    await fs.writeFile(this.path, JSON.stringify(this.products))
+    
     console.log('Producto agregado correctamente.');
+    
+    return newProduct;
+  } 
+
+  getProduct = async () =>{
+
+    const response = await fs.readFile(this.path, 'utf8');
+
+    const responseJSON = JSON.parse(response);
+
+    return responseJSON;
   }
 
-  getProducts() {
-    // Devolver todos los productos
-    return this.getProductsFromFile();
+  getProductById = async (id) =>{
+
+   const response = this.getProducts()
+
+   const product = response.find(product => product.id == id)
+
+   if(product){
+    return product
+   } else{
+    console.error('Producto Inexistente')
+   }
+
   }
 
-  getProductById(id) {
-    // Buscar un producto por id
-    const products = this.getProductsFromFile();
-    const product = products.find(p => p.id === id);
+  updateProduct = async (id, {... data}) =>{
+    const response = this.getProduct();
+    
+    const index = response.findIndex(product => product.id == id)
 
-    if (product) {
-      return product;
+    if(index != -1){
+      response[index] = {id, ...data}
+      await fs.writeFile(this.path, JSON.stringify(response))
+      return response[index]
     } else {
-      console.log('Producto no encontrado.');
-      return null;
+      console.error('Producto Inexistente')
     }
+
   }
 
-  updateProduct(id, updatedProduct) {
-    // Actualizar un producto por id
-    const products = this.getProductsFromFile();
-    const index = products.findIndex(p => p.id === id);
+  deleteProduct = async (id) =>{
 
-    if (index !== -1) {
-      // Actualizar el producto con los nuevos datos
-      products[index] = { ...products[index], ...updatedProduct };
-      this.saveProductsToFile(products);
-      console.log('Producto actualizado correctamente.');
-    } else {
-      console.log('Producto no encontrado.');
+    const response = this.getProducts()
+ 
+    const index = response.findIndex(product => product.id == id)
+    
+    if(index != -1){ 
+      this.products.splice(index, 1)
+      await fs.writeFile(this.path, JSON.stringify(products))
+    }else{
+      console.error('Producto Inexistente')
     }
+ 
   }
 
-  deleteProduct(id) {
-    // Eliminar un producto por id
-    let products = this.getProductsFromFile();
-    products = products.filter(p => p.id !== id);
-    this.saveProductsToFile(products);
-    console.log('Producto eliminado correctamente.');
-  }
-
-  generateProductId() {
-    // Generar un id autoincrementable
-    const products = this.getProductsFromFile();
-    const lastProduct = products[products.length - 1];
-    return lastProduct ? lastProduct.id + 1 : 1;
-  }
-
-  getProductsFromFile() {
-    // Leer productos desde el archivo
-    try {
-      const data = fs.readFileSync(this.path, 'utf-8');
-      return JSON.parse(data);
-    } catch (error) {
-      // Si el archivo no existe o está vacío, retornar un array vacío
-      return [];
-    }
-  }
-
-  saveProductsToFile(products) {
-    // Guardar productos en el archivo
-    const data = JSON.stringify(products, null, 2);
-    fs.writeFileSync(this.path, data, 'utf-8');
-  }
 }
-
-module.exports = { ProductManager };
-
-// // Ejemplo de uso
-// const productManager = new ProductManager('productos.json');
-
-// const newProduct = {
-//   title: 'Producto nuevo',
-//   description: 'Descripción del producto',
-//   price: 19.99,
-//   thumbnail: 'imagen.jpg',
-//   code: 'P003',
-//   stock: 30
-// };
-// const newProduct2 = {
-//   title: 'Producto nuevo',
-//   description: 'Descripción del producto',
-//   price: 19.99,
-//   thumbnail: 'imagen.jpg',
-//   code: 'P003',
-//   stock: 30
-// };
-// const newProduct3 = {
-//   title: 'Producto nuevo',
-//   description: 'Descripción del producto',
-//   price: 19.99,
-//   thumbnail: 'imagen.jpg',
-//   code: 'P003',
-//   stock: 30
-// };
-
-// productManager.addProduct(newProduct);
-// productManager.addProduct(newProduct2);
-// productManager.addProduct(newProduct3);
-
-// console.log(productManager.getProducts());
-
-// const productIdToUpdate = 1;
-// const updatedProductData = {
-//   title: 'Producto actualizado',
-//   price: 24.99
-// };
-
-// productManager.updateProduct(productIdToUpdate, updatedProductData);
-
-// console.log(productManager.getProducts());
-
-// const productIdToDelete = 2;
-// productManager.deleteProduct(productIdToDelete);
-
-// console.log(productManager.getProducts());
+  

@@ -6,7 +6,7 @@ const productManager = new ProductManager('productos.json');
 
 router.use(express.json());
 
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await productManager.getProducts();
@@ -22,7 +22,7 @@ router.get('/products', async (req, res) => {
   }
 });
 
-router.get('/products/:pid', async (req, res) => {
+router.get('/:pid', async (req, res) => {
   try {
     const productId = parseInt(req.params.pid, 10);
     const product = await productManager.getProductById(productId);
