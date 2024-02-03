@@ -1,13 +1,13 @@
 
 import {Router} from 'express';
-import { ProductManager } from './ProductManager';
+import { ProductManager } from '../ProductManager.js';
 
-const router = Router();
+const ProdRoutes = Router();
 const productManager = new ProductManager('productos.json'); 
 
-router.use(express.json());
 
-router.get('/', async (req, res) => {
+
+ProdRoutes.get('/', async (req, res) => {
   try {
     const {limit } = req.query;
     const products = await productManager.getProducts();
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:pid', async (req, res) => {
+ProdRoutes.get('/:pid', async (req, res) => {
   try {
     const {productId} = req.params;
     const product = await productManager.getProductById(productId);
@@ -39,7 +39,7 @@ router.get('/:pid', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+ProdRoutes.post('/', async (req, res) => {
   try {
     const {title, description, price, thumbnail, code, stock, status=true, category}= req.body;
     const response = await productManager.addProduct({title, description, price, thumbnail, code, stock, status, category});
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:pid', async (req, res) => {
+ProdRoutes.put('/:pid', async (req, res) => {
   try {
     const {productId} = req.params;
     const {title, description, price, thumbnail, code, stock, status=true, category} = req.body;
@@ -61,7 +61,7 @@ router.put('/:pid', async (req, res) => {
   }
 });
 
-router.delete('/:pid', async (req, res) => {
+ProdRoutes.delete('/:pid', async (req, res) => {
   try {
     const {productId} =req.params;
     await productManager.deleteProduct(productId);
@@ -71,4 +71,4 @@ router.delete('/:pid', async (req, res) => {
   }
 });
 
-export {router};
+export {ProdRoutes};

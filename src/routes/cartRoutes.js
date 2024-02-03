@@ -1,11 +1,11 @@
 
 
-import {Router, response} from 'express';
-import { CartManager } from './CartManager';
-const router = Router();
+import {Router} from 'express';
+import { CartManager } from '../CartManajer.js';
+const CartRoutes = Router();
 const cartManager = new CartManager('carrito.json'); 
 
-router.post('/', async (req, res) => {
+CartRoutes.post('/', async (req, res) => {
     try {
       const response = await cartManager.newCart();
      
@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     }
 });
   
-router.get('/:cid', async (req, res) => {
+CartRoutes.get('/:cid', async (req, res) => {
     try {
       const {cartId} = req.params;
       const response = await cartManager.getCartById(cartId);
@@ -26,7 +26,7 @@ router.get('/:cid', async (req, res) => {
     }
 });
   
-router.post('/:cid/products/:pid', async (req, res) => {
+CartRoutes.post('/:cid/products/:pid', async (req, res) => {
     try {
       const {cartId} = req.params;
       const {productId} = req.params;
@@ -38,4 +38,4 @@ router.post('/:cid/products/:pid', async (req, res) => {
     }
 });
 
-export  {router}
+export  {CartRoutes}

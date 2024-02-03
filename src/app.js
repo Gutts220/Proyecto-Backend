@@ -1,11 +1,11 @@
 
-const express = require('express');
-const ProdRoutes = require('./routes/productRoutes.js');
-const CartRoutes = require('./routes/cartRoutes.js');
-const exphbs = require('express-handlebars');
-const http = require('http');
-const socketIO = require('socket.io');
-const { ProductManager } = require('./ProductManager.js');
+import express from 'express';
+import exphbs from 'express-handlebars';
+import http from 'http';
+import { Server } from 'socket.io';
+import {ProdRoutes} from './routes/productRoutes.js';
+import {CartRoutes} from './routes/cartRoutes.js';
+import { ProductManager } from './ProductManager.js';
 
 const productManager = new ProductManager('productos.json');
 
@@ -13,7 +13,7 @@ const app = express();
 const port = 8080;                
 const API_PREFIX = 'api';
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = new Server(server);
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}))
