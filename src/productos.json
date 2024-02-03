@@ -1,29 +1,3 @@
 [
-  {
-    "title": "Producto actualizado",
-    "description": "Descripción del producto",
-    "price": 24.99,
-    "thumbnail": "imagen.jpg",
-    "code": "P003",
-    "stock": 30,
-    "id": 1
-  },
-  {
-    "title": "Producto nuevo",
-    "description": "Descripción del producto",
-    "price": 19.99,
-    "thumbnail": "imagen.jpg",
-    "code": "P003",
-    "stock": 30,
-    "id": 3
-  },
-  {
-    "title": "Producto nuevo",
-    "description": "Descripción del producto",
-    "price": 19.99,
-    "thumbnail": "imagen.jpg",
-    "code": "P003",
-    "stock": 30,
-    "id": 4
-  }
+  
 ]

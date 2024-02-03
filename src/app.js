@@ -5,6 +5,7 @@ const app = express();
 const port = 8080;                
 const API_PREFIX = 'api';
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended : true}))
 app.use(`/${API_PREFIX}/cart`, CartRoutes);
