@@ -44,7 +44,24 @@ export class CartManager {
     
     const carts = await this.getCarts();
     const index = carts.findIndex(cart => cart.id == cartId);
+    
+    if(index != -1){
+      const cartProducts = await this.getCartProducts(cartId)
+      const existingProdIndex = cartProducts.findIndex(product => product.productId == productId)
 
+      if(existingProdIndex != -1){
+        cartProducts[existingProdIndex].quantity = cartProducts[existingProdIndex].quantity + 1
+      }else {
+        cartProducts.push({productId, quantity : 1 })
+      }
+
+      carts[index].products = cartProducts
+
+      await fs.writeFile(this.path, JSON.stringify(carts))
+      console.log('Producto Agregado')
+    } else {
+      console.error('Carrito Inexistente')
+    }
 
 
   }
