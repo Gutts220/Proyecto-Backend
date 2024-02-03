@@ -1,83 +1,52 @@
 const fs = require('fs');
+import {v4 as uuidv4} from 'uuidv4'
 
-class CartManager {
-  constructor(filePath) {
-    this.path = filePath;
+export class CartManager {
+  constructor() {
+    this.path = 'carrito.json';
+    this.carts = []
   }
+  
+  getCarts = async ()=>{
+    const response = await fs.readFile(this.path, 'utf8')
+    const responseJSON = JSON.parse(response)
+    return responseJSON;
+  }
+   
 
-  addProductToCart(cartId, productId, quantity = 1) {
-    const carts = this.getCartsFromFile();
+  getCartProducts = async (id)=>{
+    const carts = await this.getCarts();
 
-    let cart = carts.find(c => c.id === cartId);
+    const cart = carts.find(cart=>cart.id == id);
 
-    if (!cart) {
-      // Si el carrito no existe, lo creamos
-      cart = {
-        id: cartId,
-        products: []
-      };
-      carts.push(cart);
-    }
-
-    // Verificar si el producto ya está en el carrito
-    const existingProductIndex = cart.products.findIndex(p => p.product === productId);
-
-    if (existingProductIndex !== -1) {
-      // Si el producto ya está en el carrito, incrementar la cantidad
-      cart.products[existingProductIndex].quantity += quantity;
+    if(cart){
+      return cart.product
     } else {
-      // Si el producto no está en el carrito, agregarlo
-      cart.products.push({ product: productId, quantity });
-    }
-
-    // Guardar el carrito actualizado en el archivo
-    this.saveCartsToFile(carts);
-    console.log('Producto agregado al carrito correctamente.');
-  }
-
-  getCartContent(cartId) {
-    const carts = this.getCartsFromFile();
-    const cart = carts.find(c => c.id === cartId);
-
-    if (cart) {
-      return cart.products;
-    } else {
-      console.log('Carrito no encontrado.');
-      return [];
+      console.error ('Carrito Inexistente')
     }
   }
 
-  removeProductFromCart(cartId, productId) {
-    let carts = this.getCartsFromFile();
-    const updatedCarts = carts.map(cart => {
-      if (cart.id === cartId) {
-        // Filtrar los productos para eliminar el que tiene el productId
-        cart.products = cart.products.filter(p => p.product !== productId);
-      }
-      return cart;
-    });
+  newCart = async() =>{
+    const id = uuidv4();
 
-    // Guardar los carritos actualizados en el archivo
-    this.saveCartsToFile(updatedCarts);
-    console.log('Producto eliminado del carrito correctamente.');
+    const newCart = {id, products : []}
+
+    this.cart = await this.getCarts();
+
+    this.carts.push(newCart)
+
+    await fs.writeFile(this.path, JSON.stringify(this.carts))
+
+    return newCart;
   }
 
-  getCartsFromFile() {
-    // Leer carritos desde el archivo
-    try {
-      const data = fs.readFileSync(this.path, 'utf-8');
-      return JSON.parse(data);
-    } catch (error) {
-      // Si el archivo no existe o está vacío, retornar un array vacío
-      return [];
-    }
-  }
+  addProductToCart = async (cartId, productId)=>{
+    
+    const carts = await this.getCarts();
+    const index = carts.findIndex(cart => cart.id == cartId);
 
-  saveCartsToFile(carts) {
-    // Guardar carritos en el archivo
-    const data = JSON.stringify(carts, null, 2);
-    fs.writeFileSync(this.path, data, 'utf-8');
+
+
   }
 }
 
-module.exports = { CartManager };
