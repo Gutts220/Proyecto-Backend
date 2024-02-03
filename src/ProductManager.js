@@ -64,7 +64,7 @@ export class ProductManager {
 
   deleteProduct = async (id) =>{
 
-    const response = this.getProducts()
+    const response = await this.getProduct()
  
     const index = response.findIndex(product => product.id == id)
     
