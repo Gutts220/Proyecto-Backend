@@ -1,11 +1,14 @@
 
 import express from 'express';
-import exphbs from 'express-handlebars';
+import handlebars from 'express-handlebars';
 import http from 'http';
 import { Server } from 'socket.io';
 import {ProdRoutes} from './routes/productRoutes.js';
 import {CartRoutes} from './routes/cartRoutes.js';
 import { ProductManager } from './ProductManager.js';
+import __dirname from './utils.js';
+import path from 'path';
+
 
 const productManager = new ProductManager('productos.json');
 
@@ -18,11 +21,11 @@ const io = new Server(server);
 app.use(express.json());
 app.use(express.urlencoded({extended : true}))
 
-app.engine(
-  'handlebars',
-  exphbs({ defaultLayout: 'main', extname: '.handlebars' })
-);
-app.set('view engine', 'handlebars');
+app.engine('handlebars', handlebars.engine());
+app.set('views', path.join(__dirname), "../views");
+app.set('view engine', 'handlebars'); 
+
+
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
