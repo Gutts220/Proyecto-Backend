@@ -1,0 +1,19 @@
+<h1>Cafe Luzi</h1>
+
+  <ul id="listaProductos">
+    {{#each productos}}
+      <li>{{this.name}} - {{this.price}}</li>
+    {{/each}}
+  </ul>
+
+  <form id="formularioProducto">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+
+    <label for="precio">Precio:</label>
+    <input type="number" id="precio" name="precio" required>
+
+    <button type="button" onclick="agregarProducto()">Agregar Producto</button>
+  </form>
+
+  <button type="button" onclick="eliminarProducto()">Eliminar ultimo Producto</button>

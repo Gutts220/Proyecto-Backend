@@ -1,5 +1,10 @@
-<div>
-    <label for="input"> Escribe tu mensaje </label>
-    <input type="text" id="input">
-    <p id="msj"></p>
-</div>
+
+
+  <h1>Cafe Luzi</h1>
+
+  <ul>
+    {{#each productos}}
+      <li>{{this.name}} - {{this.price}}</li>
+    {{/each}}
+  </ul>
+  
