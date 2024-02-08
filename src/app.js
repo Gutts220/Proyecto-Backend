@@ -1,7 +1,7 @@
 
 import express from 'express';
 import handlebars from 'express-handlebars';
-import http from 'http';
+import viewsRouter from "./routes/viewsRoutes.js"
 import { Server } from 'socket.io';
 import {ProdRoutes} from './routes/productRoutes.js';
 import {CartRoutes} from './routes/cartRoutes.js';
@@ -23,14 +23,20 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}))
 
 app.engine('handlebars', handlebars.engine());
-app.set('views', path.join(__dirname), "../views");
+app.set('views', path.join(__dirname, "./views"));
 app.set('view engine', 'handlebars'); 
 
-
+app.use(express.static(path.join(__dirname, "../public")));
+app.use("/", viewsRouter);
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
+  socket.on("nuevo-msg", (msg) => {
+    console.log(`nuevo mensaje ${msg}`)
+  });
+  
+  socket.emit("nuevo.msg", "hola desde el sv!")
   
   socket.on('nuevoProducto', async ({title, description, price, thumbnail, code, stock, status, category}) => {
     const id  = uuidv4();
