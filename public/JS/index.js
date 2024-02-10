@@ -18,8 +18,6 @@ function agregarProducto() {
   
   const nombre = document.getElementById('nombre').value;
   const precio = document.getElementById('precio').value;
-  
-  
   socket.emit('nuevoProducto', { name: nombre, price: precio });
   
   document.getElementById('formularioProducto').reset();

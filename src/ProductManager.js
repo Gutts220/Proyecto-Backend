@@ -1,9 +1,8 @@
 import {promises as fs} from 'fs';
 import {v4 as uuidv4} from 'uuid'
 
-export class ProductManager {
+export class productManager {
   constructor() {
-    
     this.path = 'productos.json';
     this.products = [];
   }
@@ -11,7 +10,7 @@ export class ProductManager {
   addProduct = async ({title, description, price, thumbnail, code, stock, status, category}) => {
     const id  = uuidv4();
     
-    let newProduct = {title, description, price, thumbnail, code, stock, status, category}
+    let newProduct = {id, title, description, price, thumbnail, code, stock, status, category}
     
     this.products = await this.getProduct()
 

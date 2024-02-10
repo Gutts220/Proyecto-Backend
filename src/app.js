@@ -5,11 +5,9 @@ import viewsRouter from "./routes/viewsRoutes.js"
 import { Server } from 'socket.io';
 import {ProdRoutes} from './routes/productRoutes.js';
 import {CartRoutes} from './routes/cartRoutes.js';
-
+import { productManager } from './ProductManager.js';
 import __dirname from './utils.js';
 import path from 'path';
-
-
 
 
 const app = express();
@@ -29,28 +27,27 @@ app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/", viewsRouter);
 
-let productos = [];
-let idCounter = 1;
+const prodManager = new productManager();
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
 
-  io.emit('productos', productos);
+  io.emit('productos', prodManager);
 
  
   socket.on('nuevoProducto', (nuevoProducto) => {
 
-    productos.push(nuevoProducto);
+    prodManager.push(nuevoProducto);
     
-    io.emit('productos', productos);
+    io.emit('productos', prodManager);
   });
 
   
   socket.on('eliminarProducto', (productoName) => {
-    productos = productos.filter((producto) => producto.name !== productoName);
+    prodManager = prodManager.filter((producto) => producto.name !== productoName);
     
-    io.emit('productos', productos);
+    io.emit('productos', prodManager);
   });
 
   
