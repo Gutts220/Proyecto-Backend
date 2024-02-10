@@ -3,14 +3,14 @@ import {Router} from 'express';
 import { productManager } from '../ProductManager.js';
 
 const ProdRoutes = Router();
-const productManager = new productManager('productos.json'); 
+const prodMan = new productManager('../productos.json'); 
 
 
 
 ProdRoutes.get('/', async (req, res) => {
   try {
     const {limit } = req.query;
-    const products = await productManager.getProducts();
+    const products = await prodMan.getProducts();
     
     if (limit) {
       const limitedProducts = products.slice(0, limit);
@@ -26,7 +26,7 @@ ProdRoutes.get('/', async (req, res) => {
 ProdRoutes.get('/:pid', async (req, res) => {
   try {
     const {productId} = req.params;
-    const product = await productManager.getProductById(productId);
+    const product = await prodMan.getProductById(productId);
 
     if (product) {
       res.json({ product });
@@ -42,7 +42,7 @@ ProdRoutes.get('/:pid', async (req, res) => {
 ProdRoutes.post('/', async (req, res) => {
   try {
     const {title, description, price, thumbnail, code, stock, status=true, category}= req.body;
-    const response = await productManager.addProduct({title, description, price, thumbnail, code, stock, status, category});
+    const response = await prodMan.addProduct({title, description, price, thumbnail, code, stock, status, category});
     io.emit('productoAgregado', response);
   } catch (error) {
     res.status(500).json({ error: 'Error al agregar el producto.' });
@@ -54,7 +54,7 @@ ProdRoutes.put('/:pid', async (req, res) => {
     const {productId} = req.params;
     const {title, description, price, thumbnail, code, stock, status=true, category} = req.body;
 
-    const response =await productManager.updateProduct(productId, {title, description, price, thumbnail, code, stock, status, category});
+    const response =await prodMan.updateProduct(productId, {title, description, price, thumbnail, code, stock, status, category});
     res.json(response);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar el producto.' });
@@ -64,7 +64,7 @@ ProdRoutes.put('/:pid', async (req, res) => {
 ProdRoutes.delete('/:pid', async (req, res) => {
   try {
     const {productId} =req.params;
-    await productManager.deleteProduct(productId);
+    await prodMan.deleteProduct(productId);
     res.json({ message: 'Producto eliminado correctamente.' });
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar el producto.' });

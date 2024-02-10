@@ -18,7 +18,7 @@ function agregarProducto() {
   
   const nombre = document.getElementById('nombre').value;
   const precio = document.getElementById('precio').value;
-  socket.emit('nuevoProducto', { name: nombre, price: precio });
+  socket.emit('nuevoProducto', { title: nombre, price: precio });
   
   document.getElementById('formularioProducto').reset();
 }
@@ -36,7 +36,7 @@ socket.on('productos', (productos) => {
 
   productos.forEach((producto) => {
     const listItem = document.createElement('li');
-    listItem.textContent = ` ${producto.name} - ${producto.price}`;
+    listItem.textContent = ` ${producto.title} - ${producto.price}`;
     listaProductos.appendChild(listItem);
   });
 });

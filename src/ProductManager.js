@@ -1,9 +1,11 @@
 import {promises as fs} from 'fs';
 import {v4 as uuidv4} from 'uuid'
+import __dirname from './utils.js';
+import path from 'path';
 
 export class productManager {
   constructor() {
-    this.path = 'productos.json';
+    this.path =  path.join(__dirname,"./productos.json");
     this.products = [];
   }
 

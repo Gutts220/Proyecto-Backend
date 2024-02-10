@@ -29,26 +29,26 @@ app.use("/", viewsRouter);
 
 const prodManager = new productManager();
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('Usuario conectado');
 
 
-  io.emit('productos', prodManager);
+  io.emit('productos', await prodManager.getProduct());
 
  
-  socket.on('nuevoProducto', (nuevoProducto) => {
+  socket.on('nuevoProducto', async (nuevoProducto) => {
 
-    prodManager.push(nuevoProducto);
+    await prodManager.addProduct(nuevoProducto)
     
     io.emit('productos', prodManager);
   });
 
   
-  socket.on('eliminarProducto', (productoName) => {
-    prodManager = prodManager.filter((producto) => producto.name !== productoName);
+  // socket.on('eliminarProducto', (productoName) => {
+  //   prodManager = prodManager.filter((producto) => producto.name !== productoName);
     
-    io.emit('productos', prodManager);
-  });
+  //   io.emit('productos', prodManager);
+  // });
 
   
   socket.on('disconnect', () => {
