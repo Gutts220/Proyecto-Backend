@@ -14,12 +14,6 @@ function agregarProducto() {
   document.getElementById('formularioProducto').reset();
 }
 
-function eliminarProducto() {
-   
-  const productoAEliminar = prompt('Ingrese producto a eliminar:');
-  socket.emit('eliminarProducto', productoAEliminar);
-}
-
 
 socket.on('productos', (productos) => {
   const listaProductos = document.getElementById('listaProductos');

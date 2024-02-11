@@ -40,15 +40,8 @@ io.on('connection', async (socket) => {
 
     await prodManager.addProduct(nuevoProducto)
     
-    io.emit('productos', prodManager);
+    io.emit('productos', await prodManager.getProduct());
   });
-
-  
-  // socket.on('eliminarProducto', (productoName) => {
-  //   prodManager = prodManager.filter((producto) => producto.name !== productoName);
-    
-  //   io.emit('productos', prodManager);
-  // });
 
   
   socket.on('disconnect', () => {
