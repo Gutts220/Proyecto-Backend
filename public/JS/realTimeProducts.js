@@ -5,6 +5,7 @@
 const socket = io()
 
 
+
 function agregarProducto() {
   
   const nombre = document.getElementById('nombre').value;

@@ -1,54 +1,78 @@
-
 import express from 'express';
 import handlebars from 'express-handlebars';
-import viewsRouter from "./routes/viewsRoutes.js"
-import { Server } from 'socket.io';
-import {ProdRoutes} from './routes/productRoutes.js';
-import {CartRoutes} from './routes/cartRoutes.js';
-import { productManager } from './ProductManager.js';
+import displayRoutes from 'express-routemap';
 import __dirname from './utils.js';
-import path from 'path';
+import { mongoDBconnection } from './dao/mongoConfig.js';
+
+const API_VERSION = "v1"
 
 
-const app = express();
-const port = 8080;                
-const API_PREFIX = 'api';
+export class App{
+  app;
+  env;
+  port;
+  server;
 
-const httpServer =app.listen(port, () => {console.log(`Servidor escuchando en http://localhost:${port}`);});
-const io = new Server(httpServer);
-
-app.use(express.json());
-app.use(express.urlencoded({extended : true}))
-
-app.engine('handlebars', handlebars.engine());
-app.set('views', __dirname + "/views");
-app.set('view engine', 'handlebars'); 
-
-app.use(express.static(path.join(__dirname, "../public")));
-app.use("/", viewsRouter);
-
-const prodManager = new productManager();
-
-io.on('connection', async (socket) => {
-  console.log('Usuario conectado');
-
-
-  io.emit('productos', await prodManager.getProduct());
-
- 
-  socket.on('nuevoProducto', async (nuevoProducto) => {
-
-    await prodManager.addProduct(nuevoProducto)
+  constructor(routes){
+    this.app = express();
+    this.env = "development";
+    this.port = 5000;
     
-    io.emit('productos', await prodManager.getProduct());
-  });
+    this.connectToDataBase();
+    this.initializeMiddleware();
+    this.initializeRoutes(routes);
+    this.initializeHandlerbars();
+   }
 
-  
-  socket.on('disconnect', () => {
-    console.log('Usuario desconectado');
-  });
-});
 
-app.use(`/${API_PREFIX}/cart`, CartRoutes);
-app.use(`/${API_PREFIX}/products`, ProdRoutes);
+   getServer(){
+    return this.app;
+   }
+
+   closeServer(){
+     this.server = this.app.listen(this.port,()=>{
+        done();
+     })
+   }
+
+   async connectToDataBase(){
+      //TODO: Inicializar la conexion
+      await mongoDBconnection()
+   }
+
+   initializeRoutes(routes){
+     routes.forEach((route) => {
+        this.app.use(`/api/${API_VERSION}`, route.router)
+     });
+   }
+    
+   initializeMiddleware(){
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true}));
+    this.app.use("/static", express.static(`${__dirname}/public`))
+   }
+
+   initializeHandlerbars(){
+    this.app.engine("handlebars", handlebars.engine());
+    this.app.set("views", __dirname + "/views");
+    this.app.set("view engine", "handlebars");
+   }
+
+   listen(){
+    this.app.listen(this.port, () => {
+        displayRoutes(this.app);
+        console.log(`======================================`)
+        console.log(` === ENV: ${this.env}`)
+        console.log(` === PORT: ${this.port}`)
+        console.log(`======================================`)
+    });
+   }
+
+
+
+}
+
+
+
+
 
