@@ -1,12 +1,12 @@
 import { App } from "./app.js";
-import { CartRoutes } from "./routes/cartRoutes.js";
+import { cartRoutes } from "./routes/cartRoutes.js";
 import { ProdRoutes } from "./routes/productRoutes.js";
 import { productManager } from "./dao/fileSystem/ProductManager.js";
 
 
 const app = new App([
     new ProdRoutes(),
-    new CartRoutes(),
+    new cartRoutes(),
 ])
 
 const httpServer =app.listen();
