@@ -1,11 +1,11 @@
 import { App } from "./app.js";
 import { cartRoutes } from "./routes/cartRoutes.js";
-import { ProdRoutes } from "./routes/productRoutes.js";
+import { prodRoutes } from "./routes/productRoutes.js";
 import { productManager } from "./dao/fileSystem/ProductManager.js";
-
+import { Server } from "socket.io";
 
 const app = new App([
-    new ProdRoutes(),
+    new prodRoutes(),
     new cartRoutes(),
 ])
 

@@ -10,7 +10,7 @@ export class cartRoutes {
 
   constructor(){
 
-    this.initCartRoutes()
+    this.initCartRoutes();
 
   }
 
