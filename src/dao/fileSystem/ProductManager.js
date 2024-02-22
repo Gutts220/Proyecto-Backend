@@ -1,7 +1,7 @@
 import {promises as fs} from 'fs';
 import {v4 as uuidv4} from 'uuid'
 import __dirname from '../../utils.js';
-
+import { productModel } from '../mongoDB/models/productModel.js';
 
 export class productManager {
   constructor() {
@@ -9,10 +9,10 @@ export class productManager {
     this.products = [];
   }
 
-  addProduct = async ({title, description, price, thumbnail, code, stock, status, category}) => {
+  addProduct = async (productModel) => {
     const id  = uuidv4();
     
-    let newProduct = {id, title, description, price, thumbnail, code, stock, status, category}
+    let newProduct = {id, productModel}
     
     this.products = await this.getProduct()
 

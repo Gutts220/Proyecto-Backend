@@ -1,13 +1,14 @@
 
 import {Router} from 'express';
 import { productManager } from '../dao/fileSystem/ProductManager.js';
-
+import { productModel } from '../dao/mongoDB/models/productModel.js';
  
 
 export class prodRoutes {
 
   router = Router();
   prodMan = new productManager('productos.json');
+  prodModel = new productModel
 
   constructor() {
 
@@ -50,8 +51,8 @@ export class prodRoutes {
   
     this.router.post('/', async (req, res) => {
       try {
-        const {title, description, price, thumbnail,   code, stock, status=true, category}= req.body;
-        const response = await prodMan.addProduct  ({title, description, price, thumbnail, code,   stock, status, category});
+        const prodModel= req.body;
+        const response = await prodMan.addProduct  (prodModel);
         io.emit('productoAgregado', response);
       } catch (error) {
         res.status(500).json({ error: 'Error al agregar   el producto.' });
@@ -61,9 +62,9 @@ export class prodRoutes {
     this.router.put('/:pid', async (req, res) => {
       try {
         const {productId} = req.params;
-        const {title, description, price, thumbnail,   code, stock, status=true, category} = req.body;
+        const prodModel = req.body;
     
-        const response =await prodMan.updateProduct  (productId, {title, description, price,   thumbnail, code, stock, status, category});
+        const response =await prodMan.updateProduct  (productId, prodModel);
         res.json(response);
       } catch (error) {
         res.status(500).json({ error: 'Error al   actualizar el producto.' });
