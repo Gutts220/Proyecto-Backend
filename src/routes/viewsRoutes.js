@@ -1,15 +1,29 @@
 import { Router } from "express";
 
-const router = Router();
-
 let productos = []
 
-router.get("/", (req, res) => {
-  res.render("home", {productos})
-})
+export class viewsRoutes{
 
-router.get('/realTimeProducts', (req, res) => {
-  res.render('realTimeProducts', { productos });
-});
+  router = Router();
+  
 
-export default router
+  constructor(){
+    this.initViewsRoutes();
+  }
+
+  initViewsRoutes(){
+
+    this.router.get("/", (req, res) => {
+      res.render("home", {productos})
+    });
+    
+    this.router.get('/realTimeProducts', (req, res) => {
+      res.render('realTimeProducts', { productos });
+    });
+
+  }
+   
+}
+
+
+
