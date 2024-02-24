@@ -31,11 +31,10 @@ const productScheme = new mongoose.Schema({
     },
     status:{
         type: String,
-        required: true,
-        enum: ["F","M"]    
+        required: true,    
     },
     category:{
-        type: Number,
+        type: String,
         required: true,
     },
 
