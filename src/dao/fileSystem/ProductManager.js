@@ -4,6 +4,7 @@ import __dirname from '../../utils.js';
 import { productModel } from '../mongoDB/models/productModel.js';
 
 export class productManager {
+  productModel = new productModel
   constructor() {
     this.path =  (__dirname + "/productos.json");
     this.products = [];

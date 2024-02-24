@@ -16,6 +16,7 @@ const io = new Server(httpServer);
 
 const prodManager = new productManager();
 
+
 io.on('connection', async (socket) => {
   console.log('Usuario conectado');
 
