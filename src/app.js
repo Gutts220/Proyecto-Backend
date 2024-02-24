@@ -4,8 +4,6 @@ import displayRoutes from 'express-routemap';
 import __dirname from './utils.js';
 import { mongoDBconnection } from './dao/mongoConfig.js';
 
-const API_VERSION = "v1"
-
 
 export class App{
   app;
@@ -42,7 +40,7 @@ export class App{
 
    initializeRoutes(routes){
      routes.forEach((route) => {
-        this.app.use(`/api/${API_VERSION}`, route.router)
+        this.app.use(`/api`, route.router)
      });
    }
     
