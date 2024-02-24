@@ -1,7 +1,6 @@
 import { App } from "./app.js";
 import { cartRoutes } from "./routes/cartRoutes.js";
 import { prodRoutes } from "./routes/productRoutes.js";
-import { productManager } from "./dao/fileSystem/ProductManager.js";
 import { Server } from "socket.io";
 import { viewsRoutes } from "./routes/viewsRoutes.js";
 import websockets from "./websockets.js";
