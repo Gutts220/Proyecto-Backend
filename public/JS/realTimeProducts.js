@@ -1,9 +1,5 @@
-//Cliente
-
-//Iniciamos la conexion por parte del cliente
 
 const socket = io()
-
 
 
 function agregarProducto() {

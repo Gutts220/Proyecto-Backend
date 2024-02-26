@@ -61,9 +61,8 @@ export class CartManager {
       console.log('Producto Agregado')
     } else {
       console.error('Carrito Inexistente')
+      
     }
-
-
   }
 }
 

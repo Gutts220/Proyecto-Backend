@@ -15,7 +15,7 @@ export class viewsRoutes{
   initViewsRoutes(){
 
     this.router.get("/", (req, res) => {
-      res.render("home", {productos})
+      res.render("home", { productos })
     });
     
     this.router.get('/realTimeProducts', (req, res) => {

@@ -24,9 +24,7 @@ export default (io) =>{
         socket.on('disconnect', () => {
           console.log('Usuario desconectado');
         });
-      });
-
-    io.on("connection", async (socket) => {
+      
         console.log("New connection: ", socket.id)
     
         socket.on("authenticate", (userName) => {
@@ -44,9 +42,9 @@ export default (io) =>{
         socket.on("disconnect", () => {
           if (socket.userName) {
             const disconnectedUser = Array.from(connectedUsers).find(user => user !== socket.userName);
-            connectedUsers.delete(disconnectedUser); // Eliminar al usuario desconectado de la lista de usuarios conectados
+            connectedUsers.delete(disconnectedUser); 
             if (disconnectedUser) {
-              io.emit("userDisconnected", disconnectedUser); // Notificar a todos los usuarios sobre el usuario desconectado
+              io.emit("userDisconnected", disconnectedUser); 
             }      
           }
     

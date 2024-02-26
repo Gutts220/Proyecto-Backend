@@ -3,6 +3,7 @@ import handlebars from 'express-handlebars';
 import displayRoutes from 'express-routemap';
 import __dirname from './utils.js';
 import { mongoDBconnection } from './dao/mongoConfig.js';
+import  path from "path";
 
 
 export class App{
@@ -10,6 +11,7 @@ export class App{
   env;
   port;
   server;
+  
 
   constructor(routes){
     this.app = express();
@@ -43,6 +45,12 @@ export class App{
         this.app.use(`/api`, route.router)
      });
    }
+
+   initializeStaticsRoutes(){
+      app.use('/realtimeproducts', express.static(path.join(__dirname, '/public')))
+      app.use('/home', express.static(path.join(__dirname, '/public')))
+      app.use('/chat', express.static(path.join(__dirname, '/public')))
+   }
     
    initializeMiddleware(){
     this.app.use(express.json());
@@ -52,7 +60,7 @@ export class App{
 
    initializeHandlerbars(){
     this.app.engine("handlebars", handlebars.engine());
-    this.app.set("views", __dirname + "/views");
+    this.app.set("views", __dirname + "./views");
     this.app.set("view engine", "handlebars");
    }
 
