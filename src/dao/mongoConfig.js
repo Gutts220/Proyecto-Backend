@@ -5,6 +5,7 @@ const DB_NAME = 'ecommerceCafeLuziDb';
 const DB_PORT = 27017
 
 const configConnection = {
+    
     url:  `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
     options: {
         useNewUrlParser: true,

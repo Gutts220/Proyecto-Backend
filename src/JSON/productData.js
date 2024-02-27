@@ -660,3 +660,5 @@ const productData = [
       "id": 1735
     }
 ]
+
+export {productData}

@@ -2,12 +2,13 @@ import {Router} from 'express';
 import { CartManager } from '../dao/fileSystem/CartManajer.js';
 
 export class cartRoutes {
-  router = Router();
-  cartManager = new CartManager('carrito.json');
+  router;
+  cartManager;
 
 
   constructor(){
-
+    this.router = Router();
+    this.cartManager = new CartManager('carrito.json');
     this.initCartRoutes();
 
   }

@@ -1,5 +1,5 @@
-import { productModel } from "../models/productModel.js";
-import productData from '../../JSON/productData.js'
+import { productModel } from './models/productModel.js';
+import { productData } from '../../JSON/productData.js';
 
 class ProductDAO {
    

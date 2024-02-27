@@ -1,4 +1,4 @@
-const socket = io()
+const socket = io.connect('http://localhost:5000')
 
 socket.on('productos', (productos) => {
     const listaProductos = document.getElementById('listaProductos');

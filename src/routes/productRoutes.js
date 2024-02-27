@@ -6,37 +6,42 @@ import { productModel } from '../dao/mongoDB/models/productModel.js';
 
 export class prodRoutes {
 
-  router = Router();
-  prodMan = new productManager('productos.json');
-  prodModel = new productModel
+  router
+  prodMan
+  prodModel
 
   constructor() {
-
+    this.router = Router();
+    this.prodMan = new productManager('productos.json');
+    this.prodModel = new productModel
     this.initProdRoutes();
-
   }
   
   initProdRoutes() {
     this.router.get('/', async (req, res) => {
+      
       try {
+
         const {limit } = req.query;
-        const products = await prodMan.getProducts();
-        
+        const products = await this.prodMan.getProducts();
         if (limit) {
           const limitedProducts = products.slice(0,   limit);
           return res.json({ products: limitedProducts });
+
         } else {
+
           return res.json({ products });
         }
       } catch (error) {
-        res.status(500).json({ error: 'Error al obtener   productos.' });
+        console.log(error)
+        res.status(500).json({ msg: 'Error al obtener   productos.', error: error });
       }
     });
   
     this.router.get('/:pid', async (req, res) => {
       try {
-        const {productId} = req.params;
-        const product = await prodMan.getProductById  (productId);
+        const {pid} = req.params;
+        const product = await this.prodMan.getProductById(pid);
     
         if (product) {
           res.json({ product });
@@ -44,7 +49,8 @@ export class prodRoutes {
           res.status(404).json({ error: 'Producto no   encontrado.' });
         }
       } catch (error) {
-        res.status(500).json({ error: 'Error al obtener   el producto.' });
+        console.log(error)
+        res.status(500).json({ msg: 'Error al obtener   producto.', error: error });
       }
     });
   
@@ -52,7 +58,7 @@ export class prodRoutes {
     this.router.post('/', async (req, res) => {
       try {
         const prodModel= req.body;
-        const response = await prodMan.addProduct  (prodModel);
+        // const response = await prodMan.addProduct  (prodModel);
         io.emit('productoAgregado', response);
       } catch (error) {
         res.status(500).json({ error: 'Error al agregar   el producto.' });
@@ -81,10 +87,6 @@ export class prodRoutes {
       }
     });
   }
-
-
-
-
 }
 
 

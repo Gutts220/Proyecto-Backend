@@ -5,11 +5,12 @@ import { productModel } from '../mongoDB/models/productModel.js';
 
 export class productManager {
 
-  productModel = new productModel
+  productModel;
 
   constructor() {
-    this.path =  (__dirname + "/productos.json");
+    this.path =  (__dirname + "/JSON/productos.json");
     this.products = [];
+    this.productModel = new productModel
   }
 
   addProduct = async (productModel) => {
@@ -31,22 +32,22 @@ export class productManager {
   getProduct = async () =>{
 
     const response = await fs.readFile(this.path, 'utf8');
-
+    
     const responseJSON = JSON.parse(response);
-
+    
     return responseJSON;
   }
 
   getProductById = async (id) =>{
-
+    
    const response = await this.getProduct()
-
+    console.log(response)
    const product = response.find(product => product.id == id)
 
    if(product){
     return product
    } else{
-    console.error('Producto Inexistente')
+    console.error('Producto Inexistente ------ getProductById')
    }
 
   }

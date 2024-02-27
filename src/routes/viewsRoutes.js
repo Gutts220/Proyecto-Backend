@@ -5,15 +5,15 @@ let productos = productModel
 
 export class viewsRoutes{
 
-  router = Router();
-  
+  router 
 
   constructor(){
+    this.router = Router();
     this.initViewsRoutes();
   }
 
   initViewsRoutes(){
-
+    
     this.router.get("/", (req, res) => {
       res.render("home", { productos })
     });
