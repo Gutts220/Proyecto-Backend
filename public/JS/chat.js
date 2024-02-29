@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:5000')
+const socket = io()
 
 const chatBox = document.getElementById("chatBox");
 const log = document.getElementById("messageLogs");
