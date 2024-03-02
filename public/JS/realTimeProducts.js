@@ -9,10 +9,13 @@ function agregarProducto() {
   socket.emit('nuevoProducto', { title: nombre, price: precio });
   
   document.getElementById('formularioProducto').reset();
+  
 }
 
 
 socket.on('productos', (productos) => {
+
+
   const listaProductos = document.getElementById('listaProductos');
   listaProductos.innerHTML = '';
 
