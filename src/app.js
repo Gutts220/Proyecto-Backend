@@ -44,8 +44,8 @@ export class App{
    }
 
    initializeRoutes(routes){
-      this.app.use(`/api`, routes[0].router)
-      this.app.use(`/api`, routes[1].router)
+      this.app.use(`/api/products`, routes[0].router)
+      this.app.use(`/api/carts`, routes[1].router)
       this.app.use(`/`, routes[2].router)
    }
 

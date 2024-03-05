@@ -2,13 +2,13 @@
 import {Router} from 'express';
 import { productManager } from '../dao/fileSystem/ProductManager.js';
 import { productModel } from '../dao/mongoDB/models/productModel.js';
- 
+import { mongoProductManager } from '../dao/mongoDB/productDao.js';
 
 export class prodRoutes {
 
-  router
-  prodMan
-  prodModel
+  router;
+  prodMan;
+  prodModel;
 
   constructor() {
     this.router = Router();

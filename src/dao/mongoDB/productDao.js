@@ -56,4 +56,4 @@ class ProductDAO {
     }
 }
 
-export const MongoProductManager = new ProductDAO();
+export const mongoProductManager = new ProductDAO();

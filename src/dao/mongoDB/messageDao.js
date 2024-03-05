@@ -10,4 +10,4 @@ class MessageDAO {
     }
 }
 
-export const MongoMessageManager = new MessageDAO();
+export const mongoMessageManager = new MessageDAO();

@@ -1,6 +1,6 @@
 import { productManager } from "./dao/fileSystem/ProductManager.js";
-import { MongoProductManager } from "./dao/mongoDB/productDao.js";
-import { MongoCartManager } from "./dao/mongoDB/cartDao.js";
+import { mongoProductManager } from "./dao/mongoDB/productDao.js";
+import { mongoCartManager } from "./dao/mongoDB/cartDao.js";
 
 const prodManager = new productManager;
 let messages = [];

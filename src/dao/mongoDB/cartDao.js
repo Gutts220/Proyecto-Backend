@@ -109,4 +109,4 @@ class CartDAO {
     }
 }
 
-export const MongoCartManager =  new CartDAO();
+export const mongoCartManager =  new CartDAO();
