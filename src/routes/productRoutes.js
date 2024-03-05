@@ -19,38 +19,54 @@ export class prodRoutes {
   
   initProdRoutes() {
     this.router.get('/', async (req, res) => {
+      const { limit = 7, page = 1, category, sort = 1 } = req.query;
+
+      const options = {
+        limit: limit,
+        page: page,
+        category: category,
+        sort: {
+          price: sort,
+        }
+      }
       
       try {
+        const {
+          docs,
+          totalDocs,
+          limit: limitPag,
+          totalPages,
+          hasPrevPage,
+          hasNextPage,
+          nextPage,
+          prevPage,
+        } = await productModel.paginate({title: filter}, {options})
 
-        const {limit } = req.query;
-        const products = await this.prodMan.getProducts();
-        if (limit) {
-          const limitedProducts = products.slice(0,   limit);
-          return res.json({ products: limitedProducts });
-
-        } else {
-
-          return res.json({ products });
-        }
+        return res.json({
+          Status: 'success',
+          mensaje: 'Busqueda exitosa',
+          Payload: docs,
+          totalPages: totalDocs,
+          nextPage: nextPage,
+          prevPage: prevPage,
+          page: page,
+          totalPages: totalPages,
+          hasPrevPage: hasPrevPage,
+          hasNextPage: hasNextPage,
+        })
       } catch (error) {
         console.log(error)
-        res.status(500).json({ msg: 'Error al obtener   productos.', error: error });
+        res.status(500).json({ msg: 'Error al obtener   productos.- productRouter.get-(/)-59 -', error: error });
       }
     });
   
     this.router.get('/:pid', async (req, res) => {
-      try {
-        const {pid} = req.params;
-        const product = await this.prodMan.getProductById(pid);
-    
-        if (product) {
-          res.json({ product });
-        } else {
-          res.status(404).json({ error: 'Producto no   encontrado.' });
-        }
+      try{
+        const pid = req.params.pid;
+        res.send(await mongoProductManager.getProductById(pid))
       } catch (error) {
         console.log(error)
-        res.status(500).json({ msg: 'Error al obtener   producto.', error: error });
+        res.status(500).json({ msg: 'Error al obtener producto.- productRouter.get-(/:cid)-69 -', error: error });
       }
     });
   
