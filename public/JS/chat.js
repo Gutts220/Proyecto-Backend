@@ -1,7 +1,7 @@
 const socket = io()
 
-const chatBox = document.getElementById("chatBox");
-const log = document.getElementById("messageLogs");
+const form = document.getElementById('form-msg')
+const msgs = document.getElementById('all-msg');
 let currentUser;
 
 (async function() {

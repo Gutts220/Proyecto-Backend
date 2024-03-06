@@ -56,7 +56,7 @@ export class prodRoutes {
         })
       } catch (error) {
         console.log(error)
-        res.status(500).json({ msg: 'Error al obtener   productos.- productRouter.get-(/)-59 -', error: error });
+        res.status(500).json({ error: 'Error al obtener   productos.- productRouter.get-(/)-59 -'});
       }
     });
   
@@ -66,43 +66,65 @@ export class prodRoutes {
         res.send(await mongoProductManager.getProductById(pid))
       } catch (error) {
         console.log(error)
-        res.status(500).json({ msg: 'Error al obtener producto.- productRouter.get-(/:cid)-69 -', error: error });
+        res.status(500).json({ error: 'Error al obtener producto.- productRouter.get-(/:cid)-69 -'});
       }
     });
-  
-  
+    
     this.router.post('/', async (req, res) => {
       try {
-        const prodModel= req.body;
-        // const response = await prodMan.addProduct  (prodModel);
-        io.emit('productoAgregado', response);
+        res.send(await mongoProductManager.addProduct(req.body))  
       } catch (error) {
-        res.status(500).json({ error: 'Error al agregar   el producto.' });
+        res.status(500).json({ error: 'Error al agregar   el producto.- productRouter.post-(/)-77 -' });
       }
+    });
+
+    this.router.post("/many", async (req, res) => {
+      
+      try {
+        res.send(await mongoProductManager.addMany(req.body))
+      } catch (error) {
+        res.status(500).json({ error: 'Error al agregar   el producto.- productRouter.post-(/many)-86 -' });
+      }   
     });
     
     this.router.put('/:pid', async (req, res) => {
       try {
-        const {productId} = req.params;
-        const prodModel = req.body;
-    
-        const response =await prodMan.updateProduct  (productId, prodModel);
-        res.json(response);
+        const { pid } = req.params;
+        res.send(await mongoProductManager.updateProduct(pid, req.body))
       } catch (error) {
-        res.status(500).json({ error: 'Error al   actualizar el producto.' });
+        res.status(500).json({ error: 'Error al   actualizar el producto.- productRouter.put-(/:pid)-95 -' });
       }
     });
   
     this.router.delete('/:pid', async (req, res) => {
       try {
-        const {productId} =req.params;
-        await prodMan.deleteProduct(productId);
-        res.json({ message: 'Producto eliminado   correctamente.' });
+        const { pid } = req.params;
+        res.send(await mongoProductManager.deleteProduct(pid))
+        res.json({ message: 'Producto eliminado correctamente.' });
       } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar   el producto.' });
+        res.status(500).json({ error: 'Error al eliminar   el producto.- productRouter.delete-(/:pid)-95 -' });
       }
     });
+
+    this.router.get("/sort/many", async (req, res) =>{
+      try {
+        const sorting = await productModel.aggregate([
+          {
+            $sort:
+              {
+                price: 1,
+              },
+          },
+        ])
+    
+        return res.json({ mesagge: "Producto encontrado correctamente ", sorting})
+    
+      } catch (error) {
+        return res.json({error: "Error al buscar el producto.- productRouter.get-(/sort/many)-123 -"})
+      }
+    })
   }
 }
+
 
 

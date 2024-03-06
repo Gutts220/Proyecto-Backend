@@ -15,15 +15,18 @@ export class viewsRoutes{
   initViewsRoutes(){
     
     this.router.get("/", (req, res) => {
-      res.render("home", { productos })
+      res.render("home", { js:"home.js",
+      css:"style.css" })
     });
     
     this.router.get('/realTimeProducts', (req, res) => {
-      res.render('realTimeProducts', { productos });
+      res.render('realTimeProducts', { js:"realTimeProducts.js",
+      css:"style.css" });
     });
 
     this.router.get("/chatContact", (req, res) => {
-      res.render("chat", { style: "chat.css"});
+      res.render("chat", { js:"chat.js", 
+      css: "style.css"});
     })
 
   }
